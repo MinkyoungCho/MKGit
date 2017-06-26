@@ -21,7 +21,7 @@ public class Main {
 				writer.newLine();
 			}
 			
-			reader.close();
+//			reader.close();
 			writer.close();
 			
 		} catch (FileNotFoundException e) {
