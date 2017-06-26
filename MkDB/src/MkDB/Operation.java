@@ -5,9 +5,9 @@ import java.io.IOException;
 
 public class Operation {
 	
-	public static int search(int key) {
-		
-	}
+//	public static int search(int key) {
+//		
+//	}
 	
 	public static void insert(BufferedWriter writer, int key) {
 		try {
@@ -17,9 +17,9 @@ public class Operation {
 		}
 	}
 	
-	public static String delete(int key) {
-		
-	}
+//	public static String delete(int key) {
+//		
+//	}
 	
 	public static void sort() {
 		
