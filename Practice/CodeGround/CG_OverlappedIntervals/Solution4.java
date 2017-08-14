@@ -1,3 +1,6 @@
+/*
+ * 모범답안 
+ */
 package CG_OverlappedIntervals;
 
 import java.io.FileInputStream;

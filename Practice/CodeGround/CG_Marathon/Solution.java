@@ -1,6 +1,10 @@
+/**
+ * (0, 0)에서 시작 --> 가지 뻗어나가기 (2^n)
+ */
 package CG_Marathon;
 
 import java.io.FileInputStream;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 class Solution {
@@ -8,6 +12,7 @@ class Solution {
 	static int min;
 	static int[][] matrix;
 	static int[][] cache;
+	static PriorityQueue<Integer> minheap;
 	
 	public static void main(String args[]) throws Exception	{
 //		Scanner sc = new Scanner(System.in);
@@ -21,7 +26,7 @@ class Solution {
 			K = sc.nextInt();
 			
 			matrix = new int[M + 1][N + 1];
-			cache = new int[M + 1][N + 1];
+			minheap = new PriorityQueue<>();
 			
 			for (int i = 0; i < matrix.length; i++) {
 				for (int j = 0; j < matrix[0].length; j++) {
@@ -29,31 +34,25 @@ class Solution {
 				}
 			}
 			
-//			goNext(M + N, 0, 0, 0, 0);
+			goNext(M + N, 0, 0, 0, 0);
 			
 			// Print the answer to standard output(screen).
 			System.out.println("Case #"+(test_case+1));
-			System.out.println(goNext(M + N, 0, 0, 0, 0));
+			System.out.println(minheap.poll());
 		}
 	}
 	
-	static int goNext(int count, int x, int y, int water, int sumOfDiff) {
+	static void goNext(int count, int x, int y, int water, int sumOfDiff) {
 		int min = Integer.MAX_VALUE;
 		
 		if (count == 0) {
 			if (x == M && y == N && water >= K) {
-				if (sumOfDiff < min) {
-					min = sumOfDiff;
-				}
+				minheap.add(sumOfDiff);
 			}
-			return min;
+			return;
 		}
 		
-		if (cache[x][y] > 0) {
-			return cache[x][y]; 
-		}
-		
-		int latitude = matrix[x][y];
+		int latitude = Math.abs(matrix[x][y]);
 		
 		if (matrix[x][y] < 0) {
 			water++;
@@ -61,16 +60,15 @@ class Solution {
 		
 		
 		// 오른쪽
-		if (y < N) {
-			min = goNext(count - 1, x, y + 1, water, sumOfDiff + Math.abs(Math.abs(latitude) - Math.abs(matrix[x][y + 1])));
+		if (y < N && count  == M - x + N - y) {
+			goNext(count - 1, x, y + 1, water, sumOfDiff + Math.abs(latitude - Math.abs(matrix[x][y + 1])));
 		}
 		
 		// 아래
-		if (x < M) {
-			min = Math.min(min, goNext(count - 1, x + 1, y, water, sumOfDiff + Math.abs(Math.abs(latitude) - Math.abs(matrix[x + 1][y]))));
+		if (x < M  && count == M - x + N - y) {
+			goNext(count - 1, x + 1, y, water, sumOfDiff + Math.abs(latitude - Math.abs(matrix[x + 1][y])));
 		}
 		
-		cache[x][y] = min;
-		return min;
+
 	}
 }
