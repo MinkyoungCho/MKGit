@@ -1,0 +1,104 @@
+package Home;
+
+import java.io.FileInputStream;
+import java.util.Scanner;
+
+class Solution {
+	static int Answer;
+	static int N, M, K;
+	static int[][] resizedMap;
+
+	public static void main(String args[]) throws Exception	{
+//		Scanner sc = new Scanner(System.in);
+		Scanner sc = new Scanner(new FileInputStream("sample_input.txt"));
+
+		int T = sc.nextInt();
+		int max = -1;
+		for(int test_case = 0; test_case < T; test_case++) {
+			N = sc.nextInt();
+			M = sc.nextInt();
+			int[][] map = new int[N + 1][N + 1];
+			int count1 = 0;
+			for (int i = 1; i <= N; i++) {
+				for (int j = 1; j <= N; j++) {
+					map[i][j] = sc.nextInt();
+					if (map[i][j] == 1) {
+						count1 ++;
+					}
+				}
+			}
+			
+			//K 값 구하기: 모든 집에게  서비스하려고할때 손해를 보지 않는 최대 범위 (집 위치 상관 없이)
+			int totalProfit = count1 * M, cost;
+			for (K = 1;; K ++) {
+				cost = K * K + (K - 1) * (K - 1);
+				if (totalProfit < cost) { // 처음으로 손해남
+					K --;
+					break;
+				}
+			}
+			
+			
+			for (int width = K; width >= 1; width--) {
+				//map 크기 조정, 재배치
+				resizedMap = new int[2 * width + N - 1][2 * width + N - 1];
+				System.out.println(resizedMap.length);
+				for (int i = 1; i <= N; i++) {
+					for (int j = 1; j <= N; j++) {
+						resizedMap[i + width - 1][j + width - 1] = map[i][j];
+						
+					}
+				} //ok
+				
+					//사이즈 K 마름모 nested로 이동시키며 최대 집의 개수 찾기
+				for (int i = width; i < N + width; i++) {
+					for (int j = width; j < N + width; j++) {
+						int res = makeDiamond(i, j, width);
+						if (res > max) {
+							System.out.println("i:" + i + ", j: " + j + ", w: " + width + ", max: " + res);
+							max = res;
+						}
+					}
+				}
+			}
+			
+			// Print the answer to standard output(screen).
+			System.out.print("#" + (test_case+1) + " ");
+			System.out.println(max);
+		}
+	}
+	
+	static int makeDiamond(int x, int y, int K) { //마름모 만들고 포함된 집의 개수 리턴
+		int res = 0;
+		
+		for (int i = 1; i <= K; i++) {
+			int j = 1;
+			if (j <= (K - i)) {
+				j ++;
+				continue;
+			}
+			
+			for (; j <= (2 * i - 1); j++) {
+				if (resizedMap[x - K + i][y - K + j] == 1) {
+					res ++;
+				}
+			}
+		}
+		
+		for (int i = K - 1; i >= 1; i--) {
+			int j = 1;
+			if (j <= (K - i)) {
+				j ++;
+				continue;
+			}
+			
+			for (; j <= (2 * i - 1); j++) {
+				if (resizedMap[x - K + i][y - K + j] == 1) {
+					res ++;
+				}
+			}
+		}
+		return res;
+	}
+	
+}

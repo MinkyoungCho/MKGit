@@ -1,0 +1,17 @@
+package Home;
+
+import java.util.Scanner;
+
+public class DiamodTest {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		int K = sc.nextInt();
+		int[][] map = new int[2* K - 1][2* K - 1];
+				
+		for ()
+
+	}
+
+}
