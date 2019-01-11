@@ -1,7 +1,7 @@
 import java.io.FileInputStream;
 import java.util.Scanner;
 
-class Solution {
+class Template {
 	static int Answer;
 
 	public static void main(String args[]) throws Exception	{
